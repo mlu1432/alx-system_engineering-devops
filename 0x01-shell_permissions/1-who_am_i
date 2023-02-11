@@ -1,7 +1,2 @@
-<<<<<<< HEAD
 #!/bin/bash
-id -un
-=======
-#1/bin/bash
 whoami
->>>>>>> 2e4b2978efa8e4972e8a8aa9b51f98ac9bad534c
