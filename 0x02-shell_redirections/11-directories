@@ -1,2 +1,2 @@
 #!/bin/bash
-find . tpye d -not -name '.' | wc -1
+find . tpe d ! -path . -print |wc -1
