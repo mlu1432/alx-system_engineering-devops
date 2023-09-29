@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Using ls as a variable to list files and
+# extract part of names after the first dash
+# Store the output of ls in the 'list' variable
+list=$(ls)
+for i in $list
+do
+    echo "$i" | cut -d'-' -f 2
+done
