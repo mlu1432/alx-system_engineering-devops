@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# This script prints out some information from the /etc/passwd file
+# It only shows the fields for the user name, user ID, and home directory.
+
+while read -r passwd; do
+  echo "$passwd" | cut -d ':' -f1,3,6
+done < "/etc/passwd"
