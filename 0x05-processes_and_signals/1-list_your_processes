@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Shows the details of the processes that are running on the system..
+# Includes processes from all users, even those
+#+ that do not have a terminal associated with them.
+
+ps -auxf

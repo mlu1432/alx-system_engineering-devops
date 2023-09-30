@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# The purpose of this script is to show
+#+ the unique identifier of this process
+# Use the special variable $$ to get the
+#+ process ID of this script and display it
+
+echo $$
