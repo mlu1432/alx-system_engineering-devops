@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Sets up an Ubuntu server with the following settings:
+#   - localhost points to 127.0.0.2
+#   - facebook.com points to 8.8.8.8
+# Replaces the original hosts file with the new file
+
+cp /etc/hosts ~/hosts.new
+echo "127.0.0.2		localhost" > ~/hosts.new
+echo "8.8.8.8		facebook.com" >> ~/hosts.new
+cp -f ~/hosts.new /etc/hosts

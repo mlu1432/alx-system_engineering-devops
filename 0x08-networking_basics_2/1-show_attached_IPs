@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Shows all the active IPv4 addresses on the machine.
+# Filters the output of the ifconfig command to get only the lines with inet
+
+ifconfig | grep -Eo "inet (addr:)?([0-9]*\.){3}[0-9]*" | cut -b 11-
