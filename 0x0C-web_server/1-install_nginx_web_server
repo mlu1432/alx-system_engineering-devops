@@ -1,0 +1,51 @@
+#!/bin/bash
+
+# Update the list of available packages and install nginx
+apt-get update -y
+apt-get install nginx -y
+
+# Overwrite the default nginx configuration file
+cat > /etc/nginx/sites-available/default << 'EOF'
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    root /var/www/html;
+
+    index index.php index.html index.htm index.nginx-debian.html;
+
+    server_name _;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php7.4-fpm.sock; # Adapt version number to match your environment
+    }
+}
+EOF
+
+# Create a simple PHP file that contains "Hello World"
+cat > /var/www/html/index.php << 'EOF'
+<html>
+  <head>
+    <title>PHP Test</title>
+  </head>
+  <body>
+    <?php echo '<p>Hello World</p>'; ?>
+  </body>
+</html>
+EOF
+
+# Reload nginx configuration without using systemctl
+nginx -s reload
+
+# Check if Nginx reload was successful
+if [ $? -ne 0 ]; then
+    echo "Nginx configuration reload failed. Please check for errors."
+    exit 1
+fi
+
+echo "Nginx installation and configuration completed successfully."
