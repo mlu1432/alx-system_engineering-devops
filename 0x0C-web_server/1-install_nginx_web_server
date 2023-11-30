@@ -1,51 +1,31 @@
 #!/bin/bash
 
-# Update the list of available packages and install nginx
-apt-get update -y
-apt-get install nginx -y
+# Install nginx
+sudo apt-get -y update
+sudo apt-get -y install nginx
 
-# Overwrite the default nginx configuration file
-cat > /etc/nginx/sites-available/default << 'EOF'
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-
-    root /var/www/html;
-
-    index index.php index.html index.htm index.nginx-debian.html;
-
-    server_name _;
-
-    location / {
-        try_files $uri $uri/ =404;
-    }
-
-    location ~ \.php$ {
-        include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/var/run/php/php7.4-fpm.sock; # Adapt version number to match your environment
-    }
-}
-EOF
-
-# Create a simple PHP file that contains "Hello World"
-cat > /var/www/html/index.php << 'EOF'
+# Create a simple HTML file with the required 'Hello World' string
+echo '<!DOCTYPE html>
 <html>
-  <head>
-    <title>PHP Test</title>
-  </head>
-  <body>
-    <?php echo '<p>Hello World</p>'; ?>
-  </body>
-</html>
-EOF
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Hello World!</h1>
+</body>
+</html>' | sudo tee /var/www/html/index.html
 
-# Reload nginx configuration without using systemctl
-nginx -s reload
+# Ensure nginx is listening on port 80, should be by default
+# but we will check the configuration file to make sure.
+# Using 'sed' to uncomment the listen directive if it's commented out
+sudo sed -i 's/# listen 80;/listen 80;/g' /etc/nginx/sites-available/default
 
-# Check if Nginx reload was successful
-if [ $? -ne 0 ]; then
-    echo "Nginx configuration reload failed. Please check for errors."
-    exit 1
-fi
-
-echo "Nginx installation and configuration completed successfully."
+# Instead of using systemctl to restart, we use the equivalent command with service
+sudo service nginx restart

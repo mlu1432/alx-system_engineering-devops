@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Install nginx
+sudo apt-get -y update
+sudo apt-get -y install nginx
+
+# Create the custom 404 HTML file
+CUSTOM_404_CONTENT='<html>
+<head>
+<title>Not Found</title>
+</head>
+<body>
+<h1>Ceci n&#39;est pas une page</h1>
+</body>
+</html>'
+
+# Save the custom 404 HTML content to a new file
+CUSTOM_404_FILE_PATH='/var/www/html/custom_404.html'
+echo "$CUSTOM_404_CONTENT" | sudo tee "$CUSTOM_404_FILE_PATH"
+
+# Update nginx configuration to use the custom 404 page
+CONF_FILE='/etc/nginx/sites-available/default'
+
+# Backup the original nginx configuration file
+sudo cp "$CONF_FILE" "${CONF_FILE}.bak"
+
+# Configure Nginx to use the custom 404 page
+sudo sed -i "/server_name _;/a \\
+    error_page 404 /custom_404.html;\\
+    location = /custom_404.html {\\
+        root /var/www/html;\\
+        internal;\\
+    }" "$CONF_FILE"
+
+# Restart nginx to apply the changes
+sudo service nginx restart

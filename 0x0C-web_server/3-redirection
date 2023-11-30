@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Install nginx
+sudo apt-get -y update
+sudo apt-get -y install nginx
+
+# Update nginx configuration to redirect requests from a specific location to another domain
+REDIRECT_DESTINATION='https://example.com'
+CONF_FILE='/etc/nginx/sites-available/default'
+LOCATION_PATH='/redirect_me'
+
+# Backup the original nginx configuration file
+sudo cp "$CONF_FILE" "${CONF_FILE}.bak"
+
+# Add a location block to the nginx configuration file to handle redirection
+sudo sed -i "/server_name _;/a \\
+    location $LOCATION_PATH {\\
+        return 301 $REDIRECT_DESTINATION;\\
+    }" "$CONF_FILE"
+
+# Restart nginx to apply the changes
+sudo service nginx restart
