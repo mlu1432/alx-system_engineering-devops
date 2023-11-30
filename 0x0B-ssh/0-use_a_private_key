@@ -1,10 +1,2 @@
 #!/bin/bash
-# Connect to the server using a private key
-# Server details
-server_ip="54.226.9.197"
-user="ubuntu"
-private_key_path="/home/sekwati/.ssh/school"
-
-echo "Connecting to $user@$server_ip using private key: $private_key_path"
-
-ssh -i "$private_key_path" "$user@$server_ip"
+ssh -i ~/.ssh/school ubuntu@54.226.9.197

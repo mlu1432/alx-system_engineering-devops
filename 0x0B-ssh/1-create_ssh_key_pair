@@ -1,2 +1,3 @@
 #!/bin/bash
-ssh-keygen -t rsa -b 4096 -f school -N betty
+
+ssh-keygen -t rsa -b 4096 -f /home/sekwati/.ssh/school -N betty

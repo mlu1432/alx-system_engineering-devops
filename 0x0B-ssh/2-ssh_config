@@ -1,0 +1,8 @@
+#!/bin/bash
+# ~/.ssh/config
+
+Host my_server
+    HostName 54.226.9.197
+    User ubuntu
+    IdentityFile /home/sekwati/.ssh/school
+    PasswordAuthentication no
