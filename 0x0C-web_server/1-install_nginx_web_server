@@ -1,31 +1,12 @@
 #!/bin/bash
+# Update package lists
+apt-get update
 
-# Install nginx
-sudo apt-get -y update
-sudo apt-get -y install nginx
+apt-get install -y nginx
 
-# Create a simple HTML file with the required 'Hello World' string
-echo '<!DOCTYPE html>
-<html>
-<head>
-<title>Welcome to nginx!</title>
-<style>
-    body {
-        width: 35em;
-        margin: 0 auto;
-        font-family: Tahoma, Verdana, Arial, sans-serif;
-    }
-</style>
-</head>
-<body>
-<h1>Hello World!</h1>
-</body>
-</html>' | sudo tee /var/www/html/index.html
+# Configure Nginx to listen on port 80
+sed -i 's/listen 80 default_server;/listen 80;/g' /etc/nginx/sites-available/default
 
-# Ensure nginx is listening on port 80, should be by default
-# but we will check the configuration file to make sure.
-# Using 'sed' to uncomment the listen directive if it's commented out
-sudo sed -i 's/# listen 80;/listen 80;/g' /etc/nginx/sites-available/default
+service nginx restart
 
-# Instead of using systemctl to restart, we use the equivalent command with service
-sudo service nginx restart
+echo "Hello World!" > /var/www/html/index.html
