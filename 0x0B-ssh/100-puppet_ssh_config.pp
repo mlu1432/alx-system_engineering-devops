@@ -1,11 +1,12 @@
-#!/usr/bin/evn bash
+#!/usr/bin/env bash
 # configuration file to allow puppet to make changes
-file { 'ect/ssh/ssh_cofig':
-	ensure => present,
-content =>"
-	#ssh client configuration
-	host*
-	IdentityFile ~/.ssh/school
-	PasswordAuthentication no
-	"
+
+file { '/etc/ssh/ssh_config':
+  ensure  => present,
+content => "
+    # SSH client configuration
+    Host *
+      IdentityFile ~/.ssh/school
+      PasswordAuthentication no
+  ",
 }
