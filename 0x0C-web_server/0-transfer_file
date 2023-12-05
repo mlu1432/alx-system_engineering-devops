@@ -5,20 +5,3 @@ then
 	        echo "Usage: 0-transfer_file PATH_TO_FILE IP USERNAME PATH_TO_SSH_KEY"
 		        exit 1
 fi
-# Setting variables equal to arguments in a function
-
-path_to_file=$1
-ip=$2
-username=$3
-path_to_ssh_key=$4
-
-# Bypassing the authentication of the remote host’s key in SSH
-
-scp -o "StrictHostKeyChkecking=no" -i "$path_to_file" "$username@ip:~/"
-# checking if the tranfer was successful
-if [ $? -eq 0 ]
-then
-	echo "FILE WAS TRANSFERED SUCCESSFULLY"
-else
-	echo "FILE TRANSFER FAILED"
-fi	
