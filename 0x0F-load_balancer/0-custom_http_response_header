@@ -8,16 +8,16 @@ echo "Hello World!" | sudo tee /var/www/html/index.html
 # Sending a user to a different web address
 new_string="server_name_;\n\trewrite ^\/redirect_me https:\/\/github.com\/mlu1432 permanent;"
 
-sudo sed -i "s/server_name _;/$new_string/" /ettc/nginx/sites-enabled/default
+sudo sed -i "s/server_name _;/$new_string/" /etc/nginx/sites-enabled/default
 
 #creating a custom error page
 echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
 
 # A special message that a web server sends back to a web browser
-sudo sed -i "server_name _;/a add-header X-Served-By $HOSTNAME;" /etc/nginx/sites-enabled/default
+sudo sed -i '/server_name _;/a \\tadd_header X-Served-By $HOSTNAME;' /etc/nginx/sites-enabled/default
 
 # Check for mistakes in the code structure
 sudo nginx -t
 
 # Restarting nginx
-sudo service nginx restarting
+sudo service nginx restart
