@@ -14,4 +14,11 @@ path_to_ssh_key=$4
 
 # Bypassing the authentication of the remote host’s key in SSH
 
-scp -o "StricthostKeyChkecking=no" -i "$path_to_file" "$username@ip:~/"
+scp -o "StrictHostKeyChkecking=no" -i "$path_to_file" "$username@ip:~/"
+# checking if the tranfer was successful
+if [ $? -eq 0 ]
+then
+	echo "FILE WAS TRANSFERED SUCCESSFULLY"
+else
+	echo "FILE TRANSFER FAILED"
+fi	
