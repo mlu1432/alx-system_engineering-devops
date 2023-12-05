@@ -1,14 +1,17 @@
-#!/bin/bash
+#!/bin/env bash
 # Check if the scp command was successful
-if [ "$#" -lt 4 ]; then
-  echo "Usage: $0 PATH_TO_FILE IP USERNAME PATH_TO_SSH_KEY"
-  exit 1
+if [ $# -lt 4 ]
+then
+	        echo "Usage: 0-transfer_file PATH_TO_FILE IP USERNAME PATH_TO_SSH_KEY"
+		        exit 1
 fi
+# Setting variables equal to arguments in a function
 
-scp -o StrictHostKeyChecking=no -i "$4" "$1" "$3"@"$2":~/
+path_to_file=$1
+ip=$2
+username=$3
+path_to_ssh_key=$4
 
-if [ $? -eq 0 ]; then
-  echo "File transfer successful!"
-else
-  echo "File transfer failed!"
-fi
+# Bypassing the authentication of the remote host’s key in SSH
+
+scp -o "StricthostKeyChkecking=no" -i "$path_to_file" "$username@ip:~/"
