@@ -1,4 +1,4 @@
-# Updating the  packages
+# Updating the packages
 sudo apt-get update
 sudo apt-get install -y nginx
 
@@ -6,18 +6,19 @@ sudo apt-get install -y nginx
 echo "Hello World!" | sudo tee /var/www/html/index.html
 
 # Sending a user to a different web address
-new_string="server_name_;\n\trewrite ^\/redirect_me https:\/\/github.com\/mlu1432 permanent;"
+new_string="server_name _;\n\trewrite ^\/redirect_me https:\/\/github.com\/mlu1432 permanent;"
 
 sudo sed -i "s/server_name _;/$new_string/" /etc/nginx/sites-enabled/default
 
-#creating a custom error page
+# Creating a custom error page
 echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
 
 # A special message that a web server sends back to a web browser
-sudo sed -i '/server_name _;/a \\tadd_header X-Served-By $HOSTNAME;' /etc/nginx/sites-enabled/default
+sudo sed -i '/server_name _;/a\ \tadd_header X-Served-By $HOSTNAME;' /etc/nginx/sites-enabled/default
 
 # Check for mistakes in the code structure
 sudo nginx -t
 
 # Restarting nginx
-sudo service nginx restart
+sudo service nginx stop
+sudo service nginx start
