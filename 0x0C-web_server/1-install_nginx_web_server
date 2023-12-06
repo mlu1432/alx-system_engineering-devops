@@ -1,12 +1,18 @@
-#!/bin/bash
-# Update package lists
-apt-get update
+#!/usr/bin/env bash
+# Steps to set up Nginx on Web-Sever-01
 
-apt-get install -y nginx
+# Updating Packages before making Installations
+sudo apt-get update
+sudo apt-get -y install nginx
 
-# Configure Nginx to listen on port 80
-sed -i 's/listen 80 default_server;/listen 80;/g' /etc/nginx/sites-available/default
+# Setting up the UFW firewall to let Nginx HTTP traffic in
+sudo ufw allow 'Nginx HTTP'
 
-service nginx restart
+# Creating an index.html page
+echo "Hello World!" | sudo tee /var/www/html/index.html
 
-echo "Hello World!" > /var/www/html/index.html
+# Checking if Nginx settings are free of errors
+sudo nginx -t
+
+# Restarting Nginx
+sudo service nginx start
