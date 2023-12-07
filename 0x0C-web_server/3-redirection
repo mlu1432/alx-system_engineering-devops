@@ -1,22 +1,16 @@
-#!/bin/bash
+#!/usr/bin/env bash
+#  sets up a new Ubuntu machine to redirect all incoming requests to another web address.
 
-# Install nginx
-sudo apt-get -y update
-sudo apt-get -y install nginx
+# Refreshing or updating packages prior to installation
+sudo apt-get update
+sudo apt-get install -y nginx
 
-# Update nginx configuration to redirect requests from a specific location to another domain
-REDIRECT_DESTINATION='https://example.com'
-CONF_FILE='/etc/nginx/sites-available/default'
-LOCATION_PATH='/redirect_me'
+# Creating an index.html page
+echo "Hello World!" | sudo tee /var/www/html/index.html
 
-# Backup the original nginx configuration file
-sudo cp "$CONF_FILE" "${CONF_FILE}.bak"
+# Performing a 301 Redirection
+string_for_replacement="server_name _;\n\trewrite ^\/redirect_me https:\/\/github.com\/mlu1432 permanent;"
+sudo sed -i "s/server_name _;/$string_for_replacement/" /etc/nginx/sites-enabled/default
 
-# Add a location block to the nginx configuration file to handle redirection
-sudo sed -i "/server_name _;/a \\
-    location $LOCATION_PATH {\\
-        return 301 $REDIRECT_DESTINATION;\\
-    }" "$CONF_FILE"
-
-# Restart nginx to apply the changes
+# Restarting Nginx service
 sudo service nginx restart
