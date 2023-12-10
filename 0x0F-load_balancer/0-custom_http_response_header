@@ -1,24 +1,28 @@
-# Updating the packages
+#!/usr/bin/env bash
+# Customizing a 404-error_page
+
+# Updating Packages before performing installations
 sudo apt-get update
 sudo apt-get install -y nginx
 
-# Making a web page that lists other pages
+# Creating an index.html page
 echo "Hello World!" | sudo tee /var/www/html/index.html
 
-# Sending a user to a different web address
+# Performing a "moved permanently redirection" (301)
 new_string="server_name _;\n\trewrite ^\/redirect_me https:\/\/github.com\/mlu1432 permanent;"
-
 sudo sed -i "s/server_name _;/$new_string/" /etc/nginx/sites-enabled/default
 
-# Creating a custom error page
+# Creating a 404 Custom error page
 echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
+new_string="listen 80 default_server;\n\terror_page 404 \/404.html;\n\tlocation = \/404.html {\n\t\troot \/var\/www\/html;\n\t\tinternal;\n\t}"
 
-# A special message that a web server sends back to a web browser
-sudo sed -i '/server_name _;/a\ \tadd_header X-Served-By $HOSTNAME;' /etc/nginx/sites-enabled/default
+sudo sed -i "s/listen 80 default_server;/$new_string/" /etc/nginx/sites-enabled/default
 
-# Check for mistakes in the code structure
+# Creating an HTTP response header
+sudo bash -c 'echo "add_header X-Served-By $HOSTNAME;" >> /etc/nginx/sites-enabled/default'
+
+# Testing configurations for syntax errors
 sudo nginx -t
 
-# Restarting nginx
-sudo service nginx stop
-sudo service nginx start
+# Restart nginx after implementing changes
+sudo service nginx restart
