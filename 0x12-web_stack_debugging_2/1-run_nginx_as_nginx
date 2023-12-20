@@ -1,15 +1,7 @@
 #!/usr/bin/env bash
 
 # Update Nginx configuration to listen on port 8080
-sed -i 's/listen[[:space:]]*80;/listen 8080;/g' /etc/nginx/sites-available/default
-sed -i 's/listen[[:space:]]*\[::\]:80;/listen [::]:8080;/g' /etc/nginx/sites-available/default
-
-# Update Nginx configuration to run as nginx user
-# Make sure to replace 'www-data' with 'nginx' if 'nginx' user exists, otherwise create and use 'nginx' user
-sed -i 's/user[[:space:]]*www-data;/user nginx;/g' /etc/nginx/nginx.conf
-
-# Restart Nginx to apply the changes
-service nginx restart
-
-# Confirm the changes
-ps aux | grep nginx
+pkill apache2
+sed -i 's/80/8080/g' /etc/nginx/sites-available/default
+chmod 644 /etc/nginx/nginx.conf
+sudo -u nginx service nginx restart
