@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
+# Configures nginx to run as the nginx user and listen on port 8080
 
-# Update Nginx configuration to listen on port 8080
+# Stop apache2 to avoid port conflicts
 pkill apache2
-sed -i 's/80/8080/g' /etc/nginx/sites-available/default
-chmod 644 /etc/nginx/nginx.conf
-sudo -u nginx service nginx restart
+
+# Update the nginx configuration to listen on port 8080
+sed -i '/listen[ \t]*80[ \t]*default_server;/c\listen 8080 default_server;' /etc/nginx/sites-available/default
+
+# Ensure nginx will run as the nginx user
+sed -i '/^user[ \t]*www-data;/c\user nginx;' /etc/nginx/nginx.conf
+
+# Restart nginx to apply the changes
+service nginx restart

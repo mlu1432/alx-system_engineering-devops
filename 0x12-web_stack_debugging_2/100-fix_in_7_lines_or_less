@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
-# Update the 'user' directive in the nginx.conf file
-pkill apache2
-sed -i 's/80/8080/g' /etc/nginx/sites-available/default
-chmod 644 /etc/nginx/nginx.conf
-sudo -u nginx service nginx restart
+# This script runs the command 'whoami' as the specified user
+# It takes one argument: the username
+# If no argument is given, it prints the usage and exits with status 1
+
+[ $# -eq 0 ] && { echo "Usage: $0 <username>"; exit 1; }
+sudo -u "$1" whoami
+
