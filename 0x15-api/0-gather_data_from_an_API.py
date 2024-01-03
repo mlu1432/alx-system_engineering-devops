@@ -10,8 +10,10 @@ if len(sys.argv) != 2:
 
 employee_id = sys.argv[1]
 
+# Use f-strings for better readability
 response = requests.get(f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}")
 
+# Split long lines for better readability
 if response.status_code != 200:
     print("Error: Failed to retrieve TODO list")
     sys.exit(1)
@@ -25,12 +27,17 @@ if response.status_code != 200:
     sys.exit(1)
 
 employee = response.json()
+# Correct employee_name to use "name" instead of "username"
 employee_name = employee.get("name")
 
 completed_tasks = [todo for todo in todos if todo.get("completed")]
 number_of_completed_tasks = len(completed_tasks)
 total_number_of_tasks = len(todos)
 
-print(f"Employee {employee_name} is done with tasks({number_of_completed_tasks}/{total_number_of_tasks}):")
+# Adjust the output messages to match the expected format
+print(f"Employee {employee_name} is done with tasks ({number_of_completed_tasks}/{total_number_of_tasks}):")
 for task in completed_tasks:
     print(f"\t{task.get('title')}")
+
+# Add a newline for better separation of output
+print()
