@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 """Gather data from an API and export to CSV"""
-import requests
 import csv
 import sys
+
+import requests
 
 if len(sys.argv) != 2:
     print("Usage: ./1-export_to_CSV.py <employee_id>")

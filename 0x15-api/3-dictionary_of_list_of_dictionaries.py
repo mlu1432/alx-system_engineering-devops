@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 """Gather data from an API and export to JSON"""
-import requests
 import json
+
+import requests
 
 user_response = requests.get("https://jsonplaceholder.typicode.com/users")
 user = user_response.json()

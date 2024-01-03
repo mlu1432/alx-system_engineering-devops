@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 """Gather data from an API and export to JSON"""
-import requests
 import json
 import sys
+
+import requests
 
 if len(sys.argv) != 2:
     print("Usage: ./2-export_to_JSON.py <employee_id>")
