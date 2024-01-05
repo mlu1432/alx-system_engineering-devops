@@ -1,47 +1,33 @@
 #!/usr/bin/python3
 """Gather data from an API and export to CSV"""
-import csv
-import sys
-
+import json
 import requests
+from sys import argv
 
-if len(sys.argv) != 2:
-    print("Usage: ./1-export_to_CSV.py <employee_id>")
-    sys.exit(1)
 
-employee_id = sys.argv[1]
+if __name__ == "__main__":
 
-response = requests.get(
-    f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
-)
+    sessionReq = requests.Session()
 
-if response.status_code != 200:
-    print("Error: Failed to retrieve TODO list")
-    sys.exit(1)
+    idEmp = argv[1]
+    idURL = 'https://jsonplaceholder.typicode.com/users/{}/todos'.format(idEmp)
+    nameURL = 'https://jsonplaceholder.typicode.com/users/{}'.format(idEmp)
 
-todos = response.json()
+    employee = sessionReq.get(idURL)
+    employeeName = sessionReq.get(nameURL)
 
-response = requests.get(
-    f"https://jsonplaceholder.typicode.com/users/{employee_id}"
-)
+    json_req = employee.json()
+    name = employeeName.json()['name']
 
-if response.status_code != 200:
-    print("Error: Failed to retrieve employee information")
-    sys.exit(1)
+    totalTasks = 0
 
-employee = response.json()
-employee_name = employee.get("name")
+    for done_tasks in json_req:
+        if done_tasks['completed']:
+            totalTasks += 1
 
-filename = f"{employee_id}.csv"
+    print("Employee {} is done with tasks({}/{}):".
+          format(name, totalTasks, len(json_req)))
 
-with open(filename, "w", newline="") as csvfile:
-    writer = csv.writer(csvfile)
-    
-    writer.writerow(["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"])
-
-    for todo in todos:
-        task_completed_status = str(todo.get("completed"))
-        task_title = todo.get("title")
-        writer.writerow([employee_id, employee_name, task_completed_status, task_title])
-
-print(f"Data saved to {filename} successfully")
+    for done_tasks in json_req:
+        if done_tasks['completed']:
+            print("\t " + done_tasks.get('title'))
