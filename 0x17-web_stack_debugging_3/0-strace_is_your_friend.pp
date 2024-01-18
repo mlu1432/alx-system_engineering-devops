@@ -1,23 +1,9 @@
 # Comment explaining the purpose of the Puppet manifest
-# Fixing Apache 500 error identified with strace
+$file_to_edit = '/var/www/html/wp-settings.php'
 
-service { 'apache2':
-  ensure    => 'running',
-  subscribe => Exec['Resolve the problem with the PHP add-on'],
-}
+#replace line containing "phpp" with "php"
 
-package { 'php':
-  ensure => 'installed',
-}
-
-file { '/var/www/html/wp-settings.php':
-  ensure  => 'file',
-  content => 'content for wp-settings.php',  # Add the actual content here
-}
-
-exec { 'Resolve the problem with the PHP add-on':
-  command     => "sed -i 's/phpp/php/g' /var/www/html/wp-settings.php",
-  path        => '/usr/bin',
-  refreshonly => true,
-  require     => Package['php'],
+exec { 'replace_line':
+  command => "sed -i 's/phpp/php/g' ${file_to_edit}",
+  path    => ['/bin','/usr/bin']
 }
