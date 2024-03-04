@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-# This script listens on port 98 on localhost
-#+ using the nc (netcat) command.
-# The nc command is a networking utility for reading and
-#+ writing data across network connections, using the TCP or UDP protocols.
-
-nc -l localhost 98
