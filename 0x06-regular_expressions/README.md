@@ -37,10 +37,12 @@ Repetition Token 1
 Filename: 2-repetition_token_1.rb
 Description: Prints characters that match the regex pattern /hb?t?n/.
 Usage: ruby 2-repetition_token_1.rb "<text>"
+
 Repetition Token 2
 Filename: 3-repetition_token_2.rb
 Description: Similar to the previous script, it prints characters that match /hb?t?n/.
 Usage: ruby 3-repetition_token_2.rb "<text>"
+
 Repetition Token 3
 Filename: 4-repetition_token_3.rb
 Description: Prints characters matching the regex pattern /hbt*n/.
