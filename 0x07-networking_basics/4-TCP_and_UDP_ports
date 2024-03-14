@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Script to display listening ports with PIDs and program names.
+
+# Using ss command, which is a utility to investigate sockets.
+ss -ltnp

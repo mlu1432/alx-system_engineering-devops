@@ -1,0 +1,5 @@
+# The OSI model is a conceptual model that characterizes the communication functions of a telecommunication system without regard to their underlying internal structure and technology.
+
+# This statement captures the essence of the OSI model as an abstract framework that standardizes the functions of a network without being tied to the specific hardware or technology used to implement these functions
+
+# The OSI model is organized hierarchically, starting with the physical layer that deals with the transmission of raw bits over a physical medium, going all the way up to the application layer, which deals with software applications that require network access. Each layer has specific roles and protocols associated with it, ensuring that when data travels through the layers, each layer only communicates with its adjacent layers, following a set of rules and standards.
