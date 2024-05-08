@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Installs and configures Nginx to respond with 'Hello World!' on Ubuntu
+
+# Update and install Nginx
+apt-get update
+apt-get install nginx -y
+
+# Ensure Nginx starts up automatically
+update-rc.d nginx defaults
+
+# Modify Nginx configuration to serve up our custom page
+echo "Hello World!" > /var/www/html/index.html
+sed -i 's/listen 80 default_server;/listen 80;/' /etc/nginx/sites-available/default
+sed -i 's/listen [::]:80 default_server;/listen [::]:80;/' /etc/nginx/sites-available/default
+
+# Restart Nginx using init.d since systemctl is not allowed
+/etc/init.d/nginx restart
