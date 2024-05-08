@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Commands to configure Apache and serve 'Hello Holberton' from the root
+apt-get update
+apt-get install apache2 -y
+echo "Hello Holberton" > /var/www/html/index.html
+service apache2 start
+update-rc.d apache2 defaults
