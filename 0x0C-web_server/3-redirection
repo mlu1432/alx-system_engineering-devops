@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Configures Nginx to redirect /redirect_me to a LinkedIn profile with a 301 Moved Permanently
+
+# Update and install Nginx
+echo "Updating system and installing Nginx..."
+sudo apt-get update -y && sudo apt-get install -y nginx
+
+# Start Nginx if it is not running
+sudo systemctl start nginx
+sudo systemctl enable nginx
+
+# Configure redirection
+echo "Configuring Nginx for redirection..."
+SED_FILE="/etc/nginx/sites-available/default"
+REDIRECT_LOCATION="https://www.linkedin.com/in/lucas-sekwati-723029bb/"
+
+# Using sed to add a location block for /redirect_me
+sudo sed -i "/server_name _;/a \\
+location /redirect_me {\\
+    return 301 $REDIRECT_LOCATION;\\
+}" $SED_FILE
+
+# Restart Nginx to apply changes
+echo "Restarting Nginx..."
+sudo systemctl restart nginx
+
+echo "Redirection configured successfully."

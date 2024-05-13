@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# This script is used to log into 269627-web-01 server.
+
+# Variables
+USERNAME="ubuntu"
+SERVER_IP="100.26.156.194"
+IDENTITY_KEY="~/.ssh/school"
+
+# Command to log in via SSH
+ssh -i "$IDENTITY_KEY" $USERNAME@$SERVER_IP
