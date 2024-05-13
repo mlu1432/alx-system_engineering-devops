@@ -1,36 +1,38 @@
-#!/usr/bin/env bash
-# Puppet manifest to install and configure Nginx with a specific redirection and content
+# Setup New Ubuntu server with nginx
 
-class nginx_setup {
-  # Ensure Nginx is installed
-  package { 'nginx':
-    ensure => installed,
-  }
-
-  # Start and enable Nginx service
-  service { 'nginx':
-    ensure    => running,
-    enable    => true,
-    require   => Package['nginx'],
-  }
-
-  # Manage the Nginx configuration file
-  file { '/etc/nginx/sites-available/default':
-    ensure  => file,
-    source  => 'puppet:///modules/nginx/default.conf', # Ensure this source file is correctly set up in your modules directory
-    require => Package['nginx'],
-    notify  => Service['nginx'], # Reload nginx service when the file changes
-  }
-
-  # Ensure the default web page displays "Hello World!"
-  file { '/var/www/html/index.nginx-debian.html':
-    ensure  => file,
-    content => '<html><head><title>Hello World</title></head><body><h1>Hello World!</h1></body></html>',
-    require => Package['nginx'],
-    notify  => Service['nginx'],
-  }
+# Update system packages
+exec { 'update system':
+  command => '/usr/bin/apt-get update',
+  path    => '/usr/bin/',
 }
 
-# Declare the class
-include nginx_setup
+# Ensure nginx is installed
+package { 'nginx':
+  ensure  => 'installed',
+  require => Exec['update system'],
+}
 
+# Configure the main page
+file {'/var/www/html/index.html':
+  ensure  => 'file',
+  content => '<html><body><h1>Hello World!</h1></body></html>',
+  require => Package['nginx'],
+}
+
+# Configure Nginx to perform a 301 redirect from /redirect_me to LinkedIn
+file_line { 'insert_redirect':
+  path    => '/etc/nginx/sites-available/default',
+  line    => 'rewrite ^/redirect_me https://www.linkedin.com/in/lucas-sekwati-723029bb/ permanent;',
+  match   => '^rewrite ^/redirect_me',
+  append_on_no_match => true,
+  require => Package['nginx'],
+  notify  => Service['nginx'],
+}
+
+# Ensure nginx service is running and enabled
+service {'nginx':
+  ensure    => running,
+  enable    => true,
+  require   => File['/var/www/html/index.html'],
+  subscribe => File_Line['insert_redirect'],
+}
