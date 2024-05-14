@@ -1,0 +1,18 @@
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Hit:1 http://apt.puppet.com focal InRelease
+Hit:2 http://archive.ubuntu.com/ubuntu focal InRelease
+Hit:3 http://security.ubuntu.com/ubuntu focal-security InRelease
+Hit:4 http://ppa.launchpad.net/brightbox/ruby-ng/ubuntu focal InRelease
+Hit:5 http://ppa.launchpad.net/vbernat/haproxy-2.4/ubuntu focal InRelease
+Get:6 http://archive.ubuntu.com/ubuntu focal-updates InRelease [114 kB]
+Hit:7 https://download.docker.com/linux/ubuntu focal InRelease
+Hit:8 http://archive.ubuntu.com/ubuntu focal-backports InRelease
+Fetched 114 kB in 9s (12.2 kB/s)
+Reading package lists...
+Building dependency tree...
+Reading state information...
+11 packages can be upgraded. Run 'apt list --upgradable' to see them.
+ * Starting nginx nginx
+   ...done.
