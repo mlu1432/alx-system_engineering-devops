@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# A bash script that installs HAProxy safely on an Ubuntu web server.
+
+# Install the software-properties-common package which helps you manage PPAs.
+# It's probably already installed, but running it again ensures that it's available.
+sudo apt update
+sudo apt install --no-install-recommends -y software-properties-common
+
+# Add the HAProxy 2.4 PPA to the list of software sources.
+# Adding the PPA ensures we get the latest version of HAProxy in the 2.4 branch.
+sudo add-apt-repository ppa:vbernat/haproxy-2.4 -y
+
+# Update the package list to include the new PPA.
+sudo apt update
+
+# Install HAProxy version 2.4.
+sudo apt install -y haproxy=2.4.\*
