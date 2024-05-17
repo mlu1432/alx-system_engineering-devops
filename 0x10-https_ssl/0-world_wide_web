@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# This script audits DNS subdomains of a given domain
+
+# Function to query DNS records
+query_dns() {
+    local domain=$1
+    local subdomain=$2
+    local fqdn="${subdomain}.${domain}"
+    local result
+    result=$(dig +short "${fqdn}")
+
+    if [[ -n "$result" ]]; then
+        echo "The subdomain ${subdomain} is a A record and points to ${result}"
+    else
+        echo "No A record found for subdomain ${subdomain}"
+    fi
+}
+
+# Main script logic
+domain=$1
+subdomain=$2
+
+if [[ -z "$domain" ]]; then
+    echo "Usage: $0 domain [subdomain]"
+    exit 1
+fi
+
+if [[ -n "$subdomain" ]]; then
+    query_dns "$domain" "$subdomain"
+else
+    for sub in www lb-01 web-01 web-02; do
+        query_dns "$domain" "$sub"
+    done
+fi
