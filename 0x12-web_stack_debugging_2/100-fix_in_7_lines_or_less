@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Ensure nginx user exists and run nginx as that user on port 8080
+id -u nginx &>/dev/null || useradd -r -s /bin/false nginx
+sed -i 's/^user .*/user nginx;/' /etc/nginx/nginx.conf
+sed -i 's/listen 80;/listen 8080;/' /etc/nginx/sites-available/default
+sed -i 's/listen \[::\]:80;/listen \[::\]:8080;/' /etc/nginx/sites-available/default
+nginx -s reload || nginx
