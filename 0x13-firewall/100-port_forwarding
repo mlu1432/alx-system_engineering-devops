@@ -1,0 +1,25 @@
+# rules.before
+#
+# Rules that should be run before ufw command line rules. Custom
+# rules should be added to one of these chains:
+#   ufw-before-input
+#   ufw-before-output
+#   ufw-before-forward
+#
+# START OPENSSH RULES
+# OpenSSH
+-A ufw-before-input -p tcp --dport 22 -j ACCEPT
+-A ufw-before-input -p tcp --dport 80 -j ACCEPT
+-A ufw-before-input -p tcp --dport 443 -j ACCEPT
+# END OPENSSH RULES
+
+*nat
+:PREROUTING ACCEPT [0:0]
+:INPUT ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+:POSTROUTING ACCEPT [0:0]
+
+# Forward traffic from port 8080 to port 80
+-A PREROUTING -p tcp --dport 8080 -j REDIRECT --to-port 80
+
+COMMIT
