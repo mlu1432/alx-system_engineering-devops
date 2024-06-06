@@ -1,37 +1,47 @@
 #!/usr/bin/python3
-"""Gather data from an API and export to JSON"""
+"""
+This script gathers data from a REST API for a given employee ID and exports
+information about the employee's TODO list to a JSON file.
+"""
 import json
+import requests
 import sys
 
-import requests
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: ./2-export_to_JSON.py <employee_id>")
+        sys.exit(1)
 
-if len(sys.argv) != 2:
-    print("Usage: ./2-export_to_JSON.py <employee_id>")
-    sys.exit(1)
+    employee_id = sys.argv[1]
 
-employee_id = sys.argv[1]
+    try:
+        session = requests.Session()
 
-user_response = requests.get(f"https://jsonplaceholder.typicode.com/users/{employee_id}")
-if user_response.status_code != 200:
-    print("Error: Failed to retrieve employee information")
-    sys.exit(1)
-user = user_response.json()
-username = user.get("username")
+        todos_url = f'https://jsonplaceholder.typicode.com/users/{employee_id}/todos'
+        user_url = f'https://jsonplaceholder.typicode.com/users/{employee_id}'
 
-todos_response = requests.get(f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}")
-if todos_response.status_code != 200:
-    print("Error: Failed to retrieve TODO list")
-    sys.exit(1)
-todos = todos_response.json()
+        todos_response = session.get(todos_url)
+        todos_response.raise_for_status()
+        todos = todos_response.json()
 
-task_list = []
-for todo in todos:
-    task = {"task": todo.get("title"), "completed": todo.get("completed"), "username": username}
-    task_list.append(task)
-task_dict = {employee_id: task_list}
+        user_response = session.get(user_url)
+        user_response.raise_for_status()
+        user = user_response.json()
+        username = user.get('username')
 
-filename = f"{employee_id}.json"
-with open(filename, "w") as jsonfile:
-    json.dump(task_dict, jsonfile)
+        tasks = [
+            {"task": task.get('title'), "completed": task.get('completed'), "username": username}
+            for task in todos
+        ]
 
-print(f"Data saved to {filename} successfully")
+        data = {employee_id: tasks}
+
+        file_json = f"{employee_id}.json"
+        with open(file_json, "w") as jsonfile:
+            json.dump(data, jsonfile)
+
+        print(f"Data exported to {file_json}")
+
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred: {e}")
+        sys.exit(1)
