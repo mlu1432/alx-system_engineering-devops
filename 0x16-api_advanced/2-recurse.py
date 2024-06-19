@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+"""
+2-recurse.py
+"""
 import requests
 
 def recurse(subreddit, hot_list=[], after=None):
@@ -15,16 +18,18 @@ def recurse(subreddit, hot_list=[], after=None):
     
     try:
         response = requests.get(url, headers=headers, params=params, allow_redirects=False)
-        if response.status_code == 200:
-            data = response.json()
-            posts = data['data']['children']
-            for post in posts:
-                hot_list.append(post['data']['title'])
-            if data['data']['after']:
-                return recurse(subreddit, hot_list, data['data']['after'])
-            else:
-                return hot_list
-        else:
+        if response.status_code != 200:
             return None
+        
+        data = response.json()
+        posts = data['data']['children']
+
+        for post in posts:
+            hot_list.append(post['data']['title'])
+
+        if data['data']['after']:
+            return recurse(subreddit, hot_list, data['data']['after'])
+        else:
+            return hot_list
     except requests.RequestException:
         return None

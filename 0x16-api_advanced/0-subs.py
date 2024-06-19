@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+"""
+0-subs.py
+"""
 import requests
 
 def number_of_subscribers(subreddit):
